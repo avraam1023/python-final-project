@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Book{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="d-flex align-items-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#4a89dc" class="bi bi-pencil-square me-3" viewBox="0 0 16 16">
+                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                </svg>
+                <h2 class="mb-0 text-gradient">Edit Book</h2>
+            </div>
+
+            {% if form.errors or image_formset.errors %}
+            <div class="alert alert-danger border-0 shadow-sm mb-4">
+                <strong>There were some errors in your submission. Please check below.</strong>
+            </div>
+            {% endif %}
+
+            <div class="card border-0 shadow-sm">
+                <form method="POST" enctype="multipart/form-data" class="needs-validation" id="editBookForm">
+                    {% csrf_token %}
+                    <div class="card-body p-4">
+                        <h4 class="text-primary mb-4">Book Details</h4>
+                        <hr class="border-primary mb-4">
+                        
+                        {% for field in form %}
+                        <div class="mb-4">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ field.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="card-footer bg-transparent border-0 d-flex justify-content-between py-4">
+                        <a href="{% url 'books' %}" class="btn btn-outline-primary px-4" id="cancelButton">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            Update Book
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-gradient {
+        background: linear-gradient(135deg, #4a89dc 0%, #3a70c2 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 600;
+    }
+    
+    .card {
+        border-radius: 16px;
+        overflow: hidden;
+    }
+    
+    .form-label {
+        color: #4a89dc;
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
+    
+    .form-control {
+        border-radius: 12px;
+        padding: 14px 16px;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: #4a89dc;
+        box-shadow: 0 0 0 4px rgba(74, 137, 220, 0.2);
+    }
+    
+    .btn {
+        border-radius: 12px;
+        font-weight: 500;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+        background-color: #4a89dc;
+        border-color: #4a89dc;
+    }
+    
+    .btn-outline-primary {
+        border: 2px solid #4a89dc;
+        color: #4a89dc;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #4a89dc;
+        color: white;
+    }
+    
+    .invalid-feedback {
+        color: #dc3545;
+        margin-top: 8px;
+        font-size: 0.9rem;
+    }
+    
+    .alert {
+        border-radius: 12px;
+    }
+</style>
+
+<script>
+    let formChanged = false;
+    document.getElementById('editBookForm').addEventListener('input', () => formChanged = true);
+
+    document.getElementById('cancelButton').addEventListener('click', function(event) {
+        if (formChanged && !confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
+            event.preventDefault();
+        }
+    });
+</script>
+{% endblock %}

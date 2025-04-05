@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}Add a New Book{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-primary">Add a New Book</h2>
+
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            <strong>There were errors in your submission. Please check below.</strong>
+        </div>
+    {% endif %}
+
+    <form method="POST" class="card p-4 shadow-sm border-primary">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <h4 class="text-primary">Book Details</h4>
+            <hr class="border-primary">
+            <div class="mb-3">
+                {% for field in form %}
+                    <div class="mb-4">
+                        <label for="{{ field.id_for_label }}" class="form-label fw-bold text-muted">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill">Add Book</button>
+            <a href="{% url 'books' %}" class="btn btn-outline-primary px-4 py-2 rounded-pill">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .border-primary {
+        border-color: #4a89dc !important;
+    }
+    
+    .btn-primary {
+        background-color: #4a89dc;
+        border-color: #4a89dc;
+    }
+    
+    .btn-primary:hover {
+        background-color: #3a70c2;
+        border-color: #3a70c2;
+    }
+    
+    .btn-outline-primary {
+        color: #4a89dc;
+        border-color: #4a89dc;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #4a89dc;
+        color: white;
+    }
+    
+    .card {
+        border-width: 2px;
+        background-color: #f8fafc;
+    }
+    
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+        background-color: #fff;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+    }
+    
+    .form-control:focus {
+        border-color: #4a89dc;
+        box-shadow: 0 0 0 0.25rem rgba(74, 137, 220, 0.25);
+        outline: none;
+    }
+    
+    textarea.form-control {
+        min-height: 120px;
+    }
+    
+    select.form-control {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='%234a89dc' d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 16px 12px;
+    }
+    
+
+    .form-label {
+        margin-bottom: 8px;
+        color: #4a89dc;
+        font-weight: 500;
+    }
+    
+
+    .card {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+
+    .btn {
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+    }
+    
+    .rounded-pill {
+        border-radius: 50px !important;
+    }
+</style>
+{% endblock %}
